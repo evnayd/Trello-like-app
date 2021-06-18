@@ -1,13 +1,37 @@
 <template>
   <div class="task">
     <p class="task__text">{{ task.text }}</p>
-    <button class="task__btn"></button>
+    <p class="task__text">{{ task.id }}</p>
+    <button class="task__btn" @click="removeTask"></button>
   </div>
 </template>
 
 <script>
 export default {
-  props: { task: Object, text: String, id: Number },
+  props: {
+    board: Object,
+    task: Object,
+    name: String,
+    boardID: Number,
+    listID: Number,
+    id: Number,
+  },
+  data() {
+    return {
+      boardId: this.boardID,
+      listId: this.listID,
+      taskID: this.task.id,
+    };
+  },
+  methods: {
+    removeTask() {
+      this.$store.dispatch("deleteTask", {
+        boardID: this.boardId,
+        listID: this.listId,
+        taskID: this.taskID,
+      });
+    },
+  },
 };
 </script>
 
@@ -37,6 +61,7 @@ export default {
   border: none;
   outline: none;
   background-color: transparent;
+  cursor: pointer;
 }
 
 h1 {

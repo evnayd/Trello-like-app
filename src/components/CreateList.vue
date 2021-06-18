@@ -2,6 +2,7 @@
   <div class="create">
     <h1 class="create__title" v-on:click="showForm">Create new list</h1>
     <form class="create__form form" v-show="formisVisible">
+      <div></div>
       <input
         type="text"
         class="form__input"
@@ -24,10 +25,13 @@
 
 <script>
 export default {
+  props: { boardID: Number, boardName: String },
   data() {
     return {
       formisVisible: false,
       listName: "",
+      lists: [],
+      name: "",
     };
   },
   methods: {
@@ -37,10 +41,12 @@ export default {
       }
       this.$store.dispatch("addNewList", {
         name: this.listName,
+        boardID: this.boardID,
       });
       this.listName = "";
       this.formisVisible = false;
     },
+
     showForm() {
       this.formisVisible = true;
     },
@@ -59,10 +65,11 @@ export default {
   text-align: left;
   border-radius: 3px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .create__title {
-  font-size: 18px;
+  font-size: 16px;
   margin: auto;
   padding-bottom: 5px;
   border-bottom: 2px solid #59c0d1;
@@ -115,11 +122,12 @@ export default {
 
   .form {
     position: absolute;
-    top: -10px;
-    right: -245px;
-    background-color: #fff;
+    top: -100px;
+
+    left: 0;
     border-radius: 3px;
     padding: 5px;
+    background-color: #fff;
   }
 }
 </style>

@@ -1,14 +1,8 @@
 import { createStore } from "vuex";
-//import Vue from "vue"; //
-//import Vuex from "vuex"; //
-
-//Vue.use(Vuex); //
 
 export const store = createStore({
   state: {
     boards: [],
-    lists: [],
-    tasks: [],
   },
   mutations: {
     //syncrous
@@ -17,44 +11,86 @@ export const store = createStore({
         state.boards.push({
           id: 1,
           name: data.name,
+          lists: [],
         });
       } else {
         state.boards.push({
           id: state.boards.slice(-1)[0].id + 1,
           name: data.name,
+          lists: [],
         });
       }
     },
     ADD_LIST(state, data) {
-      if (state.lists.length < 1) {
-        state.lists.push({
+      const boardID = data.boardID;
+      const board = state.boards.find((b) => b.id === boardID);
+
+      if (board.lists.length < 1) {
+        board.lists.push({
           id: 1,
           name: data.name,
+          tasks: [],
         });
       } else {
-        state.lists.push({
-          id: state.lists.slice(-1)[0].id + 1,
+        board.lists.push({
+          id: board.lists.slice(-1)[0].id + 1,
           name: data.name,
+          tasks: [],
         });
       }
     },
     ADD_TASK(state, data) {
-      if (state.tasks.length < 1) {
-        state.tasks.unshift({
+      const boardID = data.boardID;
+      const listID = data.listID;
+
+      const board = state.boards.find((b) => b.id === boardID);
+      const list = board.lists.find((l) => l.id === listID);
+
+      if (list.tasks.length < 1) {
+        list.tasks.unshift({
           id: 1,
           text: data.text,
         });
       } else {
-        state.tasks.unshift({
-          id: state.tasks.slice(-1)[0].id + 1,
+        list.tasks.unshift({
+          id: list.tasks.slice(-1)[0].id + 1,
           text: data.text,
         });
       }
     },
-    DELETE_TASK(state, index) {
-      state.tasks.splice(index, 1);
+    DELETE_BOARD(state, data) {
+      const boardID = data.id;
+
+      const board = state.boards.find((b) => b.id === boardID);
+      const BoardIndex = state.boards.indexOf(board);
+
+      state.boards.splice(BoardIndex, 1);
+    },
+    DELETE_LIST(state, data) {
+      const boardID = data.boardID;
+      const listID = data.listID;
+
+      const board = state.boards.find((b) => b.id === boardID);
+      const list = board.lists.find((l) => l.id === listID);
+      const ListIndex = state.boards.indexOf(list);
+
+      board.lists.splice(ListIndex, 1);
+    },
+
+    DELETE_TASK(state, data) {
+      const boardID = data.boardID;
+      const listID = data.listID;
+      const taskID = data.taskID;
+
+      const board = state.boards.find((b) => b.id === boardID);
+      const list = board.lists.find((l) => l.id === listID);
+      const task = list.tasks.find((t) => t.id === taskID);
+      const TaskIndex = list.tasks.indexOf(task);
+
+      list.tasks.splice(TaskIndex, 1);
     },
   },
+
   actions: {
     //async
     addNewBoard({ commit }, data) {
@@ -65,6 +101,12 @@ export const store = createStore({
     },
     addNewTask({ commit }, data) {
       commit("ADD_TASK", data);
+    },
+    deleteBoard({ commit }, data) {
+      commit("DELETE_BOARD", data);
+    },
+    deleteList({ commit }, data) {
+      commit("DELETE_LIST", data);
     },
     deleteTask({ commit }, data) {
       commit("DELETE_TASK", data);

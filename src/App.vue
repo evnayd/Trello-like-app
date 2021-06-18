@@ -1,5 +1,5 @@
 <template>
-  <navigation></navigation>
+  <app-header></app-header>
 
   <main class="container">
     <router-view></router-view>
@@ -8,12 +8,12 @@
 </template>
 
 <script>
-import Navigation from "./components/Navigation.vue";
+import AppHeader from "./components/AppHeader.vue";
 import TopButton from "./components/TopButton.vue";
 
 export default {
   components: {
-    Navigation,
+    AppHeader,
     TopButton,
   },
 
@@ -65,10 +65,6 @@ body {
   font-family: "Nunito Sans", "Helvetica", sans-serif;
 }
 
-/*main {
-  position: relative;
-}*/
-
 ul {
   padding: 0;
 }
@@ -87,6 +83,6 @@ a {
   padding-right: 20px;
   padding-left: 20px;
   padding-top: 100px;
-  height: 100vh;
+  padding-bottom: 20px;
 }
 </style>

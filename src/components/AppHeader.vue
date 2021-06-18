@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="header__link"><router-link to="/">Trello</router-link></div>
+    <div class="header__link">Trello</div>
   </header>
 </template>
 

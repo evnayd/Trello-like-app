@@ -1,7 +1,8 @@
 <template>
   <div class="list">
-    <h1>{{ list.name }}</h1>
-    <button class="list__btn" v-on:click="showForm">Add another task</button>
+    <h1 class="list__name">{{ list.name }}</h1>
+    <button class="list__delete" @click="removeList"></button>
+    <button class="list__btn" v-on:click="showForm">Add task</button>
     <form class="create__form form" v-show="formisVisible">
       <input
         type="text"
@@ -21,10 +22,11 @@
       ></button>
     </form>
     <task
-      v-for="(task, index) in tasks"
-      :key="task.index"
-      v-bind:task="task"
-      v-on:click="removeTheTask(index)"
+      v-for="task in list.tasks"
+      :key="task.id"
+      :task="task"
+      :listID="listID"
+      :boardID="boardID"
     >
     </task>
   </div>
@@ -34,16 +36,18 @@
 import Task from "../components/Task.vue";
 export default {
   components: { Task },
-  props: { list: Object, name: String, id: Number },
-  computed: {
-    tasks() {
-      return this.$store.state.tasks;
-    },
+  props: {
+    list: Object,
+    name: String,
+    id: Number,
+    boardID: Number,
   },
   data() {
     return {
       formisVisible: false,
       taskText: "",
+      listID: this.list.id,
+      boardId: this.list.boardID,
     };
   },
   methods: {
@@ -59,12 +63,17 @@ export default {
       }
       this.$store.dispatch("addNewTask", {
         text: this.taskText,
+        listID: this.listID,
+        boardID: this.boardID,
       });
       this.taskText = "";
       this.formisVisible = false;
     },
-    removeTheTask(index) {
-      this.$store.dispatch("deleteTask", index);
+    removeList() {
+      this.$store.dispatch("deleteList", {
+        listID: this.listID,
+        boardID: this.boardID,
+      });
     },
   },
 };
@@ -72,12 +81,27 @@ export default {
 
 <style scoped>
 .list {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   width: 100%;
   background-color: #fff;
   padding: 8px;
   border-radius: 3px;
   text-align: left;
+  position: relative;
+}
+
+.list__delete {
+  position: absolute;
+  background-image: url("../img/close_white.svg");
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  top: 22px;
+  right: 10px;
+  border: none;
+  outline: none;
+  background-color: #f2c13a;
+  cursor: pointer;
 }
 
 .list__btn {
@@ -94,8 +118,8 @@ export default {
   cursor: pointer;
 }
 
-h1 {
-  font-size: 18px;
+.list__name {
+  font-size: 16px;
   font-weight: 600;
 }
 
