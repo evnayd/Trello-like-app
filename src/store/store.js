@@ -1,11 +1,15 @@
 import { createStore } from "vuex";
 
+//api key 31abf315e391d1824b56e0f87a86abe2
+//token 981204274b99921f0ca0180b6690e6da4cdcf34fbd246f064dc9efd4b60f051d
+
 export const store = createStore({
   state: {
     boards: [],
   },
   mutations: {
-    //syncrous
+    //sync
+    //add new board
     ADD_BOARD(state, data) {
       if (state.boards.length < 1) {
         state.boards.push({
@@ -21,6 +25,7 @@ export const store = createStore({
         });
       }
     },
+    //add new list
     ADD_LIST(state, data) {
       const boardID = data.boardID;
       const board = state.boards.find((b) => b.id === boardID);
@@ -39,6 +44,8 @@ export const store = createStore({
         });
       }
     },
+
+    //add new task
     ADD_TASK(state, data) {
       const boardID = data.boardID;
       const listID = data.listID;
@@ -58,6 +65,7 @@ export const store = createStore({
         });
       }
     },
+    //add the board
     DELETE_BOARD(state, data) {
       const boardID = data.id;
 
@@ -66,6 +74,8 @@ export const store = createStore({
 
       state.boards.splice(BoardIndex, 1);
     },
+
+    //add the list
     DELETE_LIST(state, data) {
       const boardID = data.boardID;
       const listID = data.listID;
@@ -76,7 +86,7 @@ export const store = createStore({
 
       board.lists.splice(ListIndex, 1);
     },
-
+    //add the task
     DELETE_TASK(state, data) {
       const boardID = data.boardID;
       const listID = data.listID;
