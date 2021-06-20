@@ -24,13 +24,18 @@ import CreateList from "../components/CreateList.vue";
 import List from "../components/List.vue";
 export default {
   components: { List, CreateList },
-  props: { board: Object, name: String, id: Number, lists: Array },
+  props: { board: Object, name: String, id: String, lists: Array },
   data() {
     return {
       boardName: this.board.name,
       boardID: this.board.id,
       boardLists: this.board.lists,
     };
+  },
+  mounted() {
+    this.$store.dispatch("getBoardLists", {
+      boardID: this.boardID,
+    });
   },
   methods: {
     removeBoard() {
@@ -54,11 +59,9 @@ export default {
   margin-right: 15px;
   position: relative;
 }
-
 .board:hover {
   background-color: #f2c13a;
 }
-
 .board__title {
   font-size: 20px;
   color: #4a4b4f;
@@ -66,7 +69,6 @@ export default {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
 .board__btn {
   position: absolute;
   background-image: url("../img/close_white.svg");

@@ -1,7 +1,6 @@
 <template>
   <div class="task">
-    <p class="task__text">{{ task.text }}</p>
-    <p class="task__text">{{ task.id }}</p>
+    <p class="task__text">{{ task.name }}</p>
     <button class="task__btn" @click="removeTask"></button>
   </div>
 </template>
@@ -11,10 +10,8 @@ export default {
   props: {
     board: Object,
     task: Object,
-    name: String,
-    boardID: Number,
-    listID: Number,
-    id: Number,
+    boardID: String,
+    listID: String,
   },
   data() {
     return {
@@ -45,11 +42,9 @@ export default {
   width: 100%;
   position: relative;
 }
-
 .task__text {
   margin: auto;
 }
-
 .task__btn {
   position: absolute;
   background-image: url("../img/close_white.svg");
@@ -63,7 +58,6 @@ export default {
   background-color: transparent;
   cursor: pointer;
 }
-
 h1 {
   font-size: 18px;
   font-weight: 600;

@@ -41,13 +41,11 @@ export default {
       return;
     },
     addBoard() {
-      if (this.boardName.trim().length == 0) {
+      const name = this.boardName.trim();
+      if (name.length <= 0) {
         return;
       }
-
-      this.$store.dispatch("addNewBoard", {
-        name: this.boardName,
-      });
+      this.$store.dispatch("createBoard", { name });
       this.boardName = "";
       this.$emit("close");
     },
@@ -68,7 +66,6 @@ export default {
   align-items: center;
   z-index: 100;
 }
-
 .details {
   padding: 50px;
   width: 95%;
@@ -81,14 +78,12 @@ export default {
   transform: translate(-50%, -50%);
   text-align: right;
 }
-
 .details__input {
   width: 100%;
   outline: none;
   border: 2px solid #59c0d1;
   padding: 10px;
 }
-
 .details__btn {
   font-family: inherit;
   width: 32px;
@@ -103,15 +98,12 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 }
-
 .details__btn--ok {
   background-image: url("../img/tick.svg");
 }
-
 .details__btn--close {
   background-image: url("../img/close.svg");
 }
-
 @media (min-width: 768px) {
   .details {
     width: 400px;

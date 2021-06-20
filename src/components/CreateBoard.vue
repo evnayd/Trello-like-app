@@ -34,11 +34,9 @@ export default {
   border-radius: 3px;
   cursor: pointer;
 }
-
 .create:hover {
   background-color: #def4f7;
 }
-
 .create__title {
   font-size: 16px;
 }

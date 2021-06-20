@@ -10,6 +10,9 @@ export default {
   components: {
     Board,
   },
+  mounted() {
+    this.$store.dispatch("getBoards");
+  },
   computed: {
     boards() {
       return this.$store.state.boards;
