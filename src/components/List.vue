@@ -8,7 +8,7 @@
         type="text"
         class="form__input"
         placeholder="Write your task here"
-        v-model="taskText"
+        v-model="taskName"
       />
       <button
         v-on:click.prevent="addTask"
@@ -39,16 +39,22 @@ export default {
   props: {
     list: Object,
     name: String,
-    id: Number,
-    boardID: Number,
+    id: String,
+    boardID: String,
   },
   data() {
     return {
       formisVisible: false,
-      taskText: "",
+      taskName: "",
       listID: this.list.id,
       boardId: this.list.boardID,
     };
+  },
+  mounted() {
+    this.$store.dispatch("getListTasks", {
+      boardID: this.boardID,
+      listID: this.listID,
+    });
   },
   methods: {
     showForm() {
@@ -58,22 +64,19 @@ export default {
       this.formisVisible = false;
     },
     addTask() {
-      if (this.taskText.trim().length == 0) {
+      const taskName = this.taskName.trim();
+      if (taskName.length <= 0) {
         return;
       }
-      this.$store.dispatch("addNewTask", {
-        text: this.taskText,
+      this.$store.dispatch("createTask", {
+        name: taskName,
         listID: this.listID,
-        boardID: this.boardID,
       });
-      this.taskText = "";
+      this.taskName = "";
       this.formisVisible = false;
     },
     removeList() {
-      this.$store.dispatch("deleteList", {
-        listID: this.listID,
-        boardID: this.boardID,
-      });
+      this.$store.dispatch("deleteList", { listID: this.listID });
     },
   },
 };
@@ -89,7 +92,6 @@ export default {
   text-align: left;
   position: relative;
 }
-
 .list__delete {
   position: absolute;
   background-image: url("../img/close_white.svg");
@@ -103,7 +105,6 @@ export default {
   background-color: #f2c13a;
   cursor: pointer;
 }
-
 .list__btn {
   margin-bottom: 10px;
   background-color: #59c0d1;
@@ -117,12 +118,10 @@ export default {
   color: #fff;
   cursor: pointer;
 }
-
 .list__name {
   font-size: 16px;
   font-weight: 600;
 }
-
 .form__input {
   width: 100%;
   outline: none;
@@ -131,7 +130,6 @@ export default {
   margin-bottom: 10px;
   border-radius: 3px;
 }
-
 .form__btn {
   font-family: inherit;
   width: 20px;
@@ -144,15 +142,12 @@ export default {
   background-repeat: no-repeat;
   background-position: center;
 }
-
 .form__btn--ok {
   background-image: url("../img/tick.svg");
 }
-
 .form__btn--close {
   background-image: url("../img/close.svg");
 }
-
 @media (min-width: 768px) {
   .list {
     width: 300px;
