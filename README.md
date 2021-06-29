@@ -12,4 +12,4 @@ Removing boards, lists, cards.
 #npm run serve
 
 
-Technologies: HTML, CSS, Vue.js, Vue-router, Vuex.
+Technologies: HTML, CSS, Vue.js, Vue-router, Vuex for state management.
